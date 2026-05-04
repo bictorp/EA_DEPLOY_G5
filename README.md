@@ -23,28 +23,28 @@ graph TB
     Client["👥 Cliente Web"]
     Admin["👤 Administrador"]
     
-    subgraph "Frontend"
+    subgraph Frontend
         Web["🌐 Web App<br/>(React + Vite)<br/>Puerto 80"]
         Backoffice["⚙️ Backoffice<br/>(Angular)<br/>Puerto 9000"]
     end
     
-    subgraph "Backend"
-        Backend["🔧 Backend API<br/>(Node.js + Express)<br/>Puerto 1337"]
+    subgraph BackendGroup
+        BackendAPI["🔧 Backend API<br/>(Node.js + Express)<br/>Puerto 1337"]
     end
     
-    subgraph "Data"
-        MongoDB["🗄️ MongoDB<br/>Base de Datos<br/>Puerto 27017"]
+    subgraph Data
+        MongoDB["🗄️ MongoDB<br/>Base de Datos<br/>Red Interna (Oculto)"]
     end
     
     Client -->|HTTP/REST| Web
     Admin -->|HTTP/REST| Backoffice
-    Web -->|API REST| Backend
-    Backoffice -->|API REST| Backend
-    Backend -->|Query/Update| MongoDB
+    Web -->|API REST| BackendAPI
+    Backoffice -->|API REST| BackendAPI
+    BackendAPI -->|Query/Update| MongoDB
     
     style Web fill:#61dafb,stroke:#333,stroke-width:2px,color:#000
     style Backoffice fill:#dd0031,stroke:#333,stroke-width:2px,color:#fff
-    style Backend fill:#68a063,stroke:#333,stroke-width:2px,color:#fff
+    style BackendAPI fill:#68a063,stroke:#333,stroke-width:2px,color:#fff
     style MongoDB fill:#13aa52,stroke:#333,stroke-width:2px,color:#fff
     style Client fill:#f0f0f0,stroke:#333,stroke-width:2px
     style Admin fill:#f0f0f0,stroke:#333,stroke-width:2px
@@ -56,7 +56,7 @@ graph TB
 
 ### 1. **MongoDB** 🗄️
 - **Contenedor**: `univy_db`
-- **Puerto**: `27017`
+- **Puerto**: `Oculto (Accesible solo en red interna)`
 - **Descripción**: Base de datos NoSQL que almacena toda la información del sistema
 - **Volumen**: `mongo_data` (persistencia de datos)
 - **Imagen**: `mongo:latest`
@@ -141,7 +141,7 @@ cp EA_BACKEND_G5/.env.example EA_BACKEND_G5/.env
 
 3. **Iniciar todos los servicios**
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 4. **Verificar que los servicios estén corriendo**
@@ -153,7 +153,6 @@ docker-compose ps
 - 🌐 Web App: http://localhost
 - ⚙️ Backoffice: http://localhost:9000
 - 🔧 Backend API: http://localhost:1337
-- 🗄️ MongoDB: localhost:27017
 
 ### Comandos Útiles
 
@@ -291,15 +290,15 @@ JWT_EXPIRATION=24h
 
 ---
 
-## 🔒 Consideraciones de Seguridad
+## 🔒 Mejorasa de seguirad implementadas
 
-⚠️ **IMPORTANTE** - En producción:
-1. Cambiar puertos expuestos de MongoDB
-2. Usar variables de entorno seguras
-3. Implementar HTTPS
-4. Usar autenticación con Docker Registry
-5. Limitar recursos de contenedores
-6. Implementar rate limiting
+Se han aplicado las siguientes medidas de endurecimiento (Hardening) en la infraestructura Docker:
+
+1. Aislamiento de Red: La base de datos MongoDB se encuentra en una red privada (internal: true). No tiene acceso a internet ni es accesible desde fuera del servidor.
+
+2. Cierre de Puertos: Se ha eliminado el mapeo del puerto 27017 al host, evitando ataques de fuerza bruta externos.
+
+3. Comunicación Segura: El Backend es el único servicio con privilegios para consultar la base de datos a través de la red interna de Docker.
 
 ---
 
