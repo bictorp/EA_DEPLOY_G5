@@ -318,7 +318,7 @@ Este es un proyecto educativo del seminario "DevOps y Docker". Para cambios, por
 
 ## 📄 Licencia
 
-Proyecto educativo - Universidad [Institución]
+Proyecto educativo - EETAC / UPC
 
 ---
 
