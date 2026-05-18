@@ -1,5 +1,5 @@
 # Proyecto Univy - Plataforma de Gestión Universitaria
-
+Se ha implementado Gemini AI para la corrección del código y el correcto entendimiento del mismo.
 ## 📋 Descripción General
 
 Plataforma integral para la gestión universitaria desarrollada como proyecto de seminario DevOps y Docker. El proyecto consta de una arquitectura de microservicios containerizada con un backend REST API, una aplicación web para estudiantes y un panel de administración.
